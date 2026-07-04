@@ -84,7 +84,7 @@ El proyecto fue desarrollado siguiendo una arquitectura organizada por módulos,
 ```
 
 
-## Funcionalidades implementadas
+# Funcionalidades implementadas
 
 ## Libros
 
