@@ -34,7 +34,8 @@ El proyecto fue desarrollado siguiendo una arquitectura organizada por módulos,
 - Visual Studio Code
 
 ##  Estructura del proyecto
-BibliotecaCRUD/
+
+```BibliotecaCRUD/
 │
 ├── database/
 │   ├── connection.py
@@ -73,7 +74,7 @@ BibliotecaCRUD/
 │
 ├── README.md
 │
-└── requirements.txt
+└── requirements.txt```
 
 
 ## Funcionalidades implementadas
