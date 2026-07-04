@@ -1,5 +1,10 @@
-## Sistema de Gestión de Biblioteca
-##          Descripción
+# 📚 Sistema de Gestión de Biblioteca
+
+![Python](https://img.shields.io/badge/Python-3.14-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+## Descripción
 
 Este proyecto consiste en un sistema de gestión de biblioteca desarrollado en Python utilizando PostgreSQL como sistema gestor de bases de datos. El objetivo del proyecto es administrar de manera sencilla los recursos de una biblioteca mediante operaciones CRUD, consultas avanzadas y control de préstamos.
 
@@ -37,39 +42,39 @@ El proyecto fue desarrollado siguiendo una arquitectura organizada por módulos,
 
 ```BibliotecaCRUD/
 │
-├── database/
-│   ├── connection.py
-│   ├── config.py
-│   ├── schema.sql
-│   └── seed.sql
-│
-├── menus/
-│   ├── menu_autores.py
-│   ├── menu_editoriales.py
-│   ├── menu_libros.py
-│   ├── menu_prestamo.py
-│   ├── menu_principal.py
-│   └── menu_usuarios.py
-│
-├── models/
-│   ├── autor.py
-│   ├── categoria.py
-│   ├── editorial.py
-│   ├── libro.py
-│   ├── prestamo.py
-│   └── usuario.py
-│
-├── repositories/
-│   ├── autor_repository.py
-│   ├── categoria_repository.py
-│   ├── editorial_repository.py
-│   ├── libro_repository.py
-│   ├── prestamo_repository.py
-│   └── usuario_repository.py
-│
-├── utils/
-│   └── validaciones.py
-│
+├── src/
+│     ├── database/
+│     │     ├── connection.py
+│     │     ├── config.py
+│     │     ├── schema.sql
+│     │     └── seed.sql
+│     │
+│     ├── menus/
+│     │     ├── menu_autores.py
+│     │     ├── menu_editoriales.py
+│     │     ├── menu_libros.py
+│     │     ├── menu_prestamo.py
+│     │     ├── menu_principal.py
+│     │     └── menu_usuarios.py
+│     │
+│     ├── models/
+│     │     ├── autor.py
+│     │     ├── categoria.py
+│     │     ├── editorial.py
+│     │     ├── libro.py
+│     │     ├── prestamo.py
+│     │     └── usuario.py
+│     │
+│     ├── repositories/
+│     │     ├── autor_repository.py
+│     │     ├── categoria_repository.py
+│     │     ├── editorial_repository.py
+│     │     ├── libro_repository.py
+│     │     ├── prestamo_repository.py
+│     │     └── usuario_repository.py
+│     │
+│     └── utils/
+│           └── validaciones.py
 ├── main.py
 │
 ├── README.md
@@ -148,60 +153,95 @@ El proyecto fue desarrollado siguiendo una arquitectura organizada por módulos,
 
 El proyecto utiliza PostgreSQL con relaciones entre las siguientes tablas:
 
-Autores
-Categorías
-Editoriales
-Libros
-Usuarios
-Préstamos
+- Autores
+- Categorías
+- Editoriales
+- Libros
+- Usuarios
+- Préstamos
 
 Las relaciones se implementan mediante claves foráneas para garantizar la integridad de la información.
 
 ## Requisitos
-Python 3.14 o superior
-PostgreSQL
-psycopg
+- Python 3.14 o superior
+- PostgreSQL
+- psycopg
 
-## Instalar la dependencia:
+## Instalación
 
-pip install psycopg
-Ejecución
-Clonar el repositorio.
-git clone <URL_DEL_REPOSITORIO>
-Entrar al proyecto.
+1. Clona el repositorio.
+
+```bash
+git clone https://github.com/CristianRvs7/biblioteca-crud-python.git
+```
+
+2. Entra al proyecto.
+
+```bash
 cd BibliotecaCRUD
-Configurar la conexión a PostgreSQL en el archivo correspondiente.
-Ejecutar los scripts de creación de la base de datos.
-Iniciar la aplicación.
+```
+
+3. Instala las dependencias.
+
+```bash
+pip install -r requirements.txt
+```
+
+> O bien:
+
+```bash
+pip install psycopg
+```
+
+4. Configura la conexión a PostgreSQL en `config.py`.
+
+5. Ejecuta los scripts de la base de datos.
+
+```sql
+schema.sql
+seed.sql
+```
+
+6. Inicia la aplicación.
+
+```bash
 python src/main.py
-Objetivos del proyecto
+```
 
-## Este proyecto fue desarrollado con fines de aprendizaje para fortalecer conocimientos en:
+## Objetivos del proyecto
 
-Python.
-Programación orientada a objetos.
-SQL.
-PostgreSQL.
-Arquitectura por capas.
-Operaciones CRUD.
-Relaciones entre tablas.
-Validación de datos.
-Organización de proyectos en Python.
+Este proyecto fue desarrollado con fines de aprendizaje para fortalecer conocimientos en:
+
+- Python.
+- Programación orientada a objetos.
+- SQL.
+- PostgreSQL.
+- Arquitectura por capas.
+- Operaciones CRUD.
+- Relaciones entre tablas.
+- Validación de datos.
+- Organización de proyectos en Python.
 
 
 ## Mejoras futuras
 
-Historial de préstamos por usuario.
-Ranking de libros más prestados.
-Sistema de autenticación.
-API REST con FastAPI.
-Interfaz web.
-Documentación de la API.
-Pruebas automatizadas.
-Contenerización con Docker.
+- Historial de préstamos por usuario.
+- Ranking de libros más prestados.
+- Sistema de autenticación.
+- API REST con FastAPI.
+- Interfaz web.
+- Documentación de la API.
+- Pruebas automatizadas.
+- Contenerización con Docker.
+
+
+## Diagrama de la base de datos
+
+![Diagrama](docs/DiagramaDB.png)
+
 
 ## Autor
 
-Cristian Riquelmi Umaña Rivas
+Cristian Riquelmi Umaña Rivas.  
 
 Proyecto desarrollado como parte de mi proceso de formación en desarrollo Backend con Python y PostgreSQL.
