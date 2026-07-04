@@ -74,7 +74,9 @@ El proyecto fue desarrollado siguiendo una arquitectura organizada por módulos,
 │
 ├── README.md
 │
-└── requirements.txt```
+└── requirements.txt
+
+```
 
 
 ## Funcionalidades implementadas
