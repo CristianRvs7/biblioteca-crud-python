@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.routes import libros_routes
+from api.routes import libros_routes, autores_routes, editoriales_routes
 
 app = FastAPI(
     title="API Sistema de Biblioteca",
@@ -8,8 +8,5 @@ app = FastAPI(
 )
 
 app.include_router(libros_routes.router)
-
-
-@app.get("/")
-def inicio():
-    return {"mensaje": "API de Biblioteca funcionando correctamente"}
+app.include_router(autores_routes.router)
+app.include_router(editoriales_routes.router)
