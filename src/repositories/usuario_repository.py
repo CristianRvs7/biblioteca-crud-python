@@ -51,9 +51,9 @@ def crear_usuario(usuario):
             cursor.execute(
                 """
                 INSERT INTO usuarios (
-                    nombres_usuario, apellidos_usuario, docidentificacion, correo_usuario, contacto_usuario, fecha_registro
+                    nombres_usuario, apellidos_usuario, docidentificacion, correo_usuario, contacto_usuario
                 )
-                VALUES (%s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s)
                 """,
                 (
                     usuario.nombres_usuario,
@@ -61,7 +61,6 @@ def crear_usuario(usuario):
                     usuario.docidentificacion,
                     usuario.correo_usuario,
                     usuario.contacto_usuario,
-                    usuario.fecha_registro
                 )
             )
             conexion.commit()
@@ -78,8 +77,7 @@ def actualizar_usuario(usuario):
                     apellidos_usuario = %s,
                     docidentificacion = %s,
                     correo_usuario = %s,
-                    contacto_usuario = %s,
-                    fecha_registro = %s 
+                    contacto_usuario = %s
                 WHERE id_usuario = %s
                 """,
                 (
@@ -88,7 +86,6 @@ def actualizar_usuario(usuario):
                     usuario.docidentificacion,
                     usuario.correo_usuario,
                     usuario.contacto_usuario,
-                    usuario.fecha_registro,
                     usuario.id_usuario
                 )
             )

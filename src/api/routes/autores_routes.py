@@ -37,15 +37,15 @@ def buscar_por_id(id_autor : int):
 
 @router.post("", status_code=201)
 def crear_un_autor(datos_autor : AutorCrear):
-    nuevo_libro = Autor(
+    nuevo_autor = Autor(
         None,
         datos_autor.nombre_autor,
         datos_autor.apellido_autor
     )
     
-    crear_autor(nuevo_libro)
+    crear_autor(nuevo_autor)
     return{"mensaje" : "Autor creado existosamente."}
-
+ 
 @router.delete("/{id_autor}")
 def eliminar_un_autor(id_autor):
     autor = obtener_autor_por_id
