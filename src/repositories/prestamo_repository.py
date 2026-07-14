@@ -8,21 +8,27 @@ def obtener_prestamos():
     with obtener_conexion() as conexion:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                SELECT
+                  SELECT
                     p.id_prestamo,
-                    CONCAT(u.nombres_usuario, ' ', u.apellidos_usuario) AS nombres_usuario,
-                    l.titulo_libro,
+                    p.id_usuario,
+                    p.id_libro,
                     p.fecha_prestamo,
                     p.fecha_limite,
                     p.fecha_devolucion,
-                    p.estado
+                    p.estado,
+                    CONCAT(
+                        u.nombres_usuario,
+                        ' ',
+                        u.apellidos_usuario
+                    ) AS nombre_usuario,
+                    l.titulo_libro
                 FROM prestamos p
                 INNER JOIN usuarios u
                     ON p.id_usuario = u.id_usuario
                 INNER JOIN libros l
                     ON p.id_libro = l.id_libro
-                ORDER BY p.id_prestamo;
-            """)
+                ORDER BY p.id_prestamo
+                """)
             resultados = cursor.fetchall()
 
     prestamos = []
@@ -33,14 +39,16 @@ def obtener_prestamos():
 
     for fila in resultados:
         prestamo = Prestamo(
-            id_prestamo=fila[0],
-            id_usuario=fila[1],
-            id_libro=fila[2],
-            fecha_prestamo=fila[3],
-            fecha_limite=fila[4],
-            fecha_devolucion=fila[5],
-            estado=fila[6]
-        )
+    id_prestamo=fila[0],
+    id_usuario=fila[1],
+    id_libro=fila[2],
+    fecha_prestamo=fila[3],
+    fecha_limite=fila[4],
+    fecha_devolucion=fila[5],
+    estado=fila[6],
+    nombre_usuario=fila[7],
+    titulo_libro=fila[8]
+)
 
         prestamos.append(prestamo)
 
@@ -52,7 +60,24 @@ def obtener_prestamo_por_id(id_prestamo):
     with obtener_conexion() as conexion:
         with conexion.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM prestamos WHERE id_prestamo = %s",
+                """SELECT p.id_prestamo,
+                    p.id_usuario,
+                    p.id_libro,
+                    p.fecha_prestamo,
+                    p.fecha_limite,
+                    p.fecha_devolucion,
+                    p.estado,
+                    CONCAT(
+                        u.nombres_usuario,
+                        ' ',
+                        u.apellidos_usuario
+                    ) AS nombre_usuario,
+                    l.titulo_libro
+                FROM prestamos p
+                INNER JOIN usuarios u
+                    ON p.id_usuario = u.id_usuario
+                INNER JOIN libros l
+                    ON p.id_libro = l.id_libro WHERE p.id_prestamo = %s""",
                 (id_prestamo,)
             )
             fila = cursor.fetchone()
@@ -76,14 +101,12 @@ def crear_prestamo(prestamo):
             fila = cursor.fetchone()
 
             if fila is None:
-                print("El libro no existe")
-                return
+                raise ValueError("El libro no existe")
 
             existencias = fila[0]
 
             if existencias <= 0:
-                print("No hay existencias disponibles")
-                return
+               raise ValueError("Ese libro se encuentra sin existencias por el momento")
 
             cursor.execute(
                 """
@@ -91,19 +114,19 @@ def crear_prestamo(prestamo):
                     id_usuario,
                     id_libro,
                     fecha_limite,
-                    fecha_devolucion,
                     estado
                 )
-                VALUES (%s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s) RETURNING id_prestamo
                 """,
                 (
                     prestamo.id_usuario,
                     prestamo.id_libro,
                     prestamo.fecha_limite,
-                    prestamo.fecha_devolucion,
-                    prestamo.estado
+                    "Activo"
                 )
             )
+            
+            id_prestamo = cursor.fetchone()[0]
 
             cursor.execute(
                 """
@@ -115,6 +138,7 @@ def crear_prestamo(prestamo):
             )
 
         conexion.commit()
+        return id_prestamo
 ## ===========================================================================================
 
 def devolver_prestamo(id_prestamo):
@@ -188,30 +212,62 @@ def eliminar_prestamo(id_prestamo):
             
 ## ==============================================================================================
 
-def actualizar_prestamo(prestamo):
+
+def actualizar_prestamo(id_prestamo, prestamo):
     with obtener_conexion() as conexion:
         with conexion.cursor() as cursor:
+
+            cursor.execute(
+                """
+                SELECT id_libro, estado
+                FROM prestamos
+                WHERE id_prestamo = %s
+                """,
+                (id_prestamo,)
+            )
+
+            fila = cursor.fetchone()
+
+            if fila is None:
+                raise ValueError("El préstamo no existe")
+
+            id_libro = fila[0]
+            estado_anterior = fila[1]
+
+            fecha_devolucion = prestamo.fecha_devolucion
+
+            if prestamo.estado.lower() == "devuelto" and fecha_devolucion is None:
+                fecha_devolucion = datetime.now()
+
             cursor.execute(
                 """
                 UPDATE prestamos
-                SET id_usuario = %s,
-                    id_libro = %s,
-                    fecha_prestamo = %s,
-                    fecha_limite = %s,
+                SET fecha_limite = %s,
                     fecha_devolucion = %s,
                     estado = %s
                 WHERE id_prestamo = %s
                 """,
                 (
-                    prestamo.id_usuario,
-                    prestamo.id_libro,
-                    prestamo.fecha_prestamo,
                     prestamo.fecha_limite,
-                    prestamo.fecha_devolucion,
+                    fecha_devolucion,
                     prestamo.estado,
-                    prestamo.id_prestamo
+                    id_prestamo
                 )
             )
+
+            if (
+                estado_anterior.lower() != "devuelto"
+                and prestamo.estado.lower() == "devuelto"
+            ):
+                cursor.execute(
+                    """
+                    UPDATE libros
+                    SET existencias = existencias + 1
+                    WHERE id_libro = %s
+                    """,
+                    (id_libro,)
+                )
+
             conexion.commit()
 
 ## ==============================================================================================
