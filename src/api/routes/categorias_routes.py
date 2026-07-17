@@ -45,7 +45,7 @@ def crear_nueva_categoria(datos_categoria : CategoriaCrear):
         datos_categoria.nombre_categoria
     )
     crear_categoria(nueva_categoria)
-    return {"mensaje" : "Categoria creada correctamente"}
+    return {"mensaje" : "Categoria creada correctamente."}
 
 
 @router.delete("/{id_categoria}")
@@ -54,10 +54,10 @@ def borrar_categoria(id_categoria : int):
     if categoria is None:
         raise HTTPException(
             status_code=404,
-            detail= "Esa categoria no existe"
+            detail= "Esa categoria no existe."
         )
     eliminar_categoria(id_categoria)
-    return {"mensaje" : "La categoria ha sido eliminada exitosamente"}
+    return {"mensaje" : "Categoria eliminada exitosamente."}
 
 
 @router.put("/{id_categoria}")
@@ -66,12 +66,12 @@ def editar_una_categoria(id_categoria : int, categoria_actualizada : CategoriaCr
     if categoria is None:
         raise HTTPException(
             status_code=404,
-            detail= "Esa categoria no existe"
+            detail= "Esa categoria no existe."
         )
     datos_actualizados = Categoria(
         None,
         categoria_actualizada.nombre_categoria
     )
     actualizar_categoria(datos_actualizados)
-    return {"mensaje" : "La categoria se actualizo correctamente"}
+    return {"mensaje" : "Categoria actualizada correctamente."}
     

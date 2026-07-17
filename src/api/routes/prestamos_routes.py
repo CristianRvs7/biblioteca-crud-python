@@ -32,7 +32,7 @@ def obtener_un_prestamo(id_prestamo):
     if prestamo is None:
         raise HTTPException(
             status_code=404,
-            detail="Prestamo inexistente"
+            detail="Ese prestamo no existe."
         )
     return prestamo_a_diccionario(prestamo)
 
@@ -51,7 +51,7 @@ def insertar_prestamo( datos_prestamo : PrestamoCrear):
         id_prestamo = crear_prestamo(nuevo_prestamo)
 
         return {
-        "mensaje": "Préstamo creado exitosamente",
+        "mensaje": "Préstamo creado exitosamente.",
         "id_prestamo": id_prestamo
         }     
     except ValueError as error:
@@ -67,10 +67,10 @@ def eliminar_un_prestamo(id_prestamo : int):
     if prestamo is None:
         raise HTTPException(
             status_code=404,
-            detail= "El prestamo no existe"
+            detail= "Ese prestamo no existe."
         )
     eliminar_prestamo(id_prestamo)
-    return {"mensaje" : "Se ha eliminado correctamente en prestamo"}
+    return {"mensaje" : "Prestamo eliminado exitosamente."}
 
 @router.put("/{id_prestamo}")
 def modificar_prestamo(

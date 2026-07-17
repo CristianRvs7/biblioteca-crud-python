@@ -37,7 +37,7 @@ def buscar_por_id(id_libro: int):
     if libro is None:
         raise HTTPException(
             status_code=404,
-            detail="Libro no encontrado"
+            detail="Ese libro no existe."
         )
     return convertir_libro_a_diccionario(libro)
 
@@ -57,7 +57,7 @@ def crear_un_libro(datos_libro: LibroCrear):
 
     crear_libro(nuevo_libro)
 
-    return {"mensaje": "Libro creado exitosamente"}
+    return {"mensaje": "Libro creado exitosamente."}
 
 @router.delete("/{id_libro}")
 def eliminar_un_libro(id_libro : int):
@@ -65,10 +65,10 @@ def eliminar_un_libro(id_libro : int):
     if libro is None:
         raise HTTPException(
             status_code=404,
-            detail= "Ese libro no existe"
+            detail= "Ese libro no existe."
         )
     eliminar_libro(id_libro)
-    return {"mensaje" : "Libro eliminado correctamente"}
+    return {"mensaje" : "Libro eliminado exitosamente."}
 
 @router.put("/{id_libro}")
 def actualizar_un_libro(id_libro : int, datos_libro : LibroCrear):
@@ -76,7 +76,7 @@ def actualizar_un_libro(id_libro : int, datos_libro : LibroCrear):
     if libro is None:
         raise HTTPException(
             status_code=404,
-            detail= "Ese libro no existe"
+            detail= "Ese libro no existe."
         )
     libro_actualizado = Libro(
         id_libro,
@@ -89,4 +89,4 @@ def actualizar_un_libro(id_libro : int, datos_libro : LibroCrear):
         datos_libro.existencias
     )
     actualizar_libro(libro_actualizado)
-    return {"mensaje" : "El libro se ha actualizado correctamente"}
+    return {"mensaje" : "Libro actualizado exitosamente."}

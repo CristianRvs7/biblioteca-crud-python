@@ -54,7 +54,7 @@ def crear_un_usuario(datos_usuario : UsuarioCrear):
         None
     )
     crear_usuario(nuevo_usuario)
-    return {"mensaje" : "Usuario creado correctamente"}
+    return {"mensaje" : "Usuario creado exitosamente."}
 
 
 @router.delete("/{id_usuario}")
@@ -66,7 +66,7 @@ def borrar_usuario(id_usuario : int):
             detail="El usuario no existe."
         )
     eliminar_usuario(id_usuario)
-    return{"mensaje" : "El usuario se ha eliminado correctamente"}
+    return{"mensaje" : "Usuario eliminado exitosamente."}
 
 @router.put("/{id_usuario}")
 def actualizar_un_usuario(id_usuario : int, datos_usuario : UsuarioCrear):
@@ -74,7 +74,7 @@ def actualizar_un_usuario(id_usuario : int, datos_usuario : UsuarioCrear):
     if usuario is None:
         raise HTTPException(
             status_code=404,
-            detail="El usuario no existe"
+            detail="Ese usuario no existe."
         )
     usuario_actualizado = Usuario(
         id_usuario,
@@ -86,4 +86,4 @@ def actualizar_un_usuario(id_usuario : int, datos_usuario : UsuarioCrear):
         usuario.fecha_registro
     )
     actualizar_usuario(usuario_actualizado)
-    return{"mensaje" : "El usuario ha sido actualizado"}
+    return{"mensaje" : "Usuario actualizado exitosamente."}

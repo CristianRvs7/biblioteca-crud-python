@@ -31,7 +31,7 @@ def buscar_por_id(id_autor : int):
     if autor is None:
         raise HTTPException(
             status_code= 404,
-            detail="Ese autor no existe"
+            detail="Ese autor no existe."
         )
     return convertir_autor_a_diccionario(autor)
 
@@ -52,7 +52,7 @@ def eliminar_un_autor(id_autor):
     if autor is None:
         raise HTTPException(
             status_code=404,
-            detail= "Ese autor no existe"
+            detail= "Ese autor no existe."
         )
     eliminar_autor(id_autor)
     return {"mensaje" : "Autor eliminado exitosamente."}
@@ -64,7 +64,7 @@ def actualizar_datos(id_autor: int, datos_autor: AutorCrear):
     if autor is None:
         raise HTTPException(
             status_code=404,
-            detail="Ese autor no existe"
+            detail="Ese autor no existe."
         )
     autor_actualizado = Autor(
         id_autor,
@@ -72,4 +72,4 @@ def actualizar_datos(id_autor: int, datos_autor: AutorCrear):
         datos_autor.apellido_autor
     )
     actualizar_autor(autor_actualizado)
-    return {"mensaje": "El autor ha sido actualizado correctamente"}
+    return {"mensaje": "Autor actualizado correctamente."}
