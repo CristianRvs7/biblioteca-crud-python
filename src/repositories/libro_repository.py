@@ -9,26 +9,27 @@ from models.libro import Libro
 def obtener_libros():
     with obtener_conexion() as conexion:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM libros ORDER BY id_libro ASC")
+            cursor.execute("""SELECT                     
+                    l.id_libro,
+                    l.isbn,
+                    l.titulo_libro,
+                    l.id_autor,
+                    a.nombre_autor,
+                    a.apellido_autor,
+                    l.id_categoria,
+                    c.nombre_categoria,
+                    l.id_editorial,
+                    e.nombre_editorial,
+                    l.anio_lanzamiento,
+                    l.existencias
+                FROM libros l
+                JOIN autores a ON l.id_autor = a.id_autor
+                JOIN categorias c ON l.id_categoria = c.id_categoria
+                JOIN editoriales e ON l.id_editorial = e.id_editorial 
+                ORDER BY id_libro ASC""")
             resultados = cursor.fetchall()
-
-    libros = []
-
-    for fila in resultados:
-        libro = Libro(
-            id_libro=fila[0],
-            isbn=fila[1],
-            titulo=fila[2],
-            id_autor=fila[3],
-            id_categoria=fila[4],
-            id_editorial=fila[5],
-            anio_lanzamiento=fila[6],
-            existencias=fila[7]
-        )
-
-        libros.append(libro)
-
-    return libros
+            
+    return resultados
 
 ## =============================================================================================
 
@@ -84,7 +85,7 @@ def crear_libro(libro):
                     isbn, titulo_libro, id_autor, id_categoria,
                     id_editorial, anio_lanzamiento, existencias
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id_libro
                 """,
                 (
                     libro.isbn,
@@ -96,7 +97,12 @@ def crear_libro(libro):
                     libro.existencias
                 )
             )
+            fila = cursor.fetchone()
+            id_libro = fila[0]
+
             conexion.commit()
+
+            return id_libro
 
 ## ================================================================================================
 
@@ -153,9 +159,12 @@ def obtener_libros_detallados_por_id(id_libro):
                     l.id_libro,
                     l.isbn,
                     l.titulo_libro,
+                    l.id_autor,
                     a.nombre_autor,
                     a.apellido_autor,
+                    l.id_categoria,
                     c.nombre_categoria,
+                    l.id_editorial,
                     e.nombre_editorial,
                     l.anio_lanzamiento,
                     l.existencias
